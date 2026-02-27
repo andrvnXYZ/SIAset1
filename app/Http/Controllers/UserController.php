@@ -16,13 +16,19 @@ class UserController extends Controller
         $this->validate($request, $rules);
 
         $user = User::create($request->all());
-        return response()->json(['message' => 'User created successfully', 'data' => $user], 201);
+        return response()->json(['message' => 'USER CREATED SUCCEESS NAA', 'data' => $user], 201);
+    }
+
+
+    public function getUsers(){
+    $users = User::all();
+    return response()->json($users, 200);
     }
 
     public function show($id){
         // FindOrFail automatically throws an exception if not found
         $user = User::findOrFail($id);
-        return response()->json(['message' => 'User retrieved successfully', 'data' => $user]);
+        return response()->json(['message' => 'USER RETRIEVED SUCCESSFULLY', 'data' => $user]);
     }
 
     public function update(Request $request, $id) {
@@ -34,12 +40,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
         
-        return response()->json(['message' => 'User updated successfully', 'data' => $user]);
+        return response()->json(['message' => 'USER UPDATED SUCCESSFULLY', 'data' => $user]);
     }
 
     public function delete($id) {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['message' => 'User deleted successfully']);
+        return response()->json(['message' => 'USER DELETED SUCCESSFULLY']);
     }
 }

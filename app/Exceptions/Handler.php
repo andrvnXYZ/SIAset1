@@ -2,6 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponser;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
@@ -11,6 +14,10 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+
+    
+
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -35,6 +42,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
+
         parent::report($exception);
     }
 
@@ -50,8 +58,8 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
 
-    // 1. Error kon ang Username exists na o kulang ang input (Validation)
-    if ($exception instanceof ValidationException) {
+        //http npofound
+      if ($exception instanceof ValidationException) {
         return response()->json([
             'error' => 'Validation Error',
             'messages' => $exception->errors()
@@ -61,8 +69,8 @@ class Handler extends ExceptionHandler
     // 2. Error kon ang User ID wala sa database (User Not Found)
     if ($exception instanceof ModelNotFoundException) {
         return response()->json([
-            'error' => 'User not found',
-            'message' => 'Ang ID nga imong gipangita wala sa among database.'
+            'error' => 'USSEEER WHEEREE?',
+            'message' => 'WALAY ID MA KITA SA DATABASE'
         ], 404);
     }
 
@@ -74,8 +82,14 @@ class Handler extends ExceptionHandler
         ], $exception->getStatusCode());
     }
 
-    // Default behavior for other errors
-    return parent::render($request, $exception);
-        
+ 
+
+
+
+        return response()->json([
+            'error' => 'Unexpected Exception',
+            'message' => 'An unexpected error occurred. Please try again later.'
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
 }
